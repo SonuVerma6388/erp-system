@@ -12,6 +12,8 @@ import {
   getOrders,
   getOrderById,
   getRecentOrders,
+  updateOrderStatus,
+  deleteOrder,
 } from "../repositories/orderRepository.js";
 
 // Generate Order Number
@@ -148,8 +150,8 @@ export const createNewOrder = async (data, userId) => {
 };
 
 // Get All Orders
-export const getAllOrders = async () => {
-  return await getOrders();
+export const getAllOrders = async (page, limit, search, payment, status) => {
+  return await getOrders(page, limit, search, payment, status);
 };
 
 // Get Single Order
@@ -165,4 +167,26 @@ export const getSingleOrder = async (id) => {
 
 export const getLatestOrders = async () => {
   return await getRecentOrders();
+};
+
+// Update Status
+export const changeOrderStatus = async (id, status) => {
+  const order = await updateOrderStatus(id, status);
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  return order;
+};
+
+// Delete Order
+export const removeOrder = async (id) => {
+  const order = await deleteOrder(id);
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  return order;
 };
